@@ -16,6 +16,8 @@ Use semi-agentic tools when available:
 - `tia_summarize_scl` for SCL/AWL source.
 - `tia_generate_export_documentation` for report drafts.
 - `tia_prepare_manual_import_checklist` before the user imports anything manually.
+- `tia_generate_axis_control_pack` to create SCL UDT/DB/FB artifacts, tag CSV, HMI plan, report, and checklist for manual import.
+- `tia_generate_plc_tag_table_csv` to create suggested tag tables with hardware addresses intentionally left for human assignment.
 
 Preferred workflow:
 
