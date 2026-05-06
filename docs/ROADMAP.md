@@ -14,6 +14,15 @@
 - Report opened project metadata.
 - Enumerate devices and PLC software containers.
 - Validate V16 bridge on a TIA Portal V16 VM/lab PC.
+- Add version override and capability mode selection for V16-V21.
+
+## Milestone 0.2b
+
+- Implement semi-agentic export analysis tools.
+- Parse exported XML/SCL artifacts without requiring Openness.
+- Generate documentation and review reports from exported files.
+
+Status: initial implementation added in v0.1 for XML/SCL/AWL/CSV/Excel folder analysis and Markdown draft generation.
 
 ## Milestone 0.3
 
