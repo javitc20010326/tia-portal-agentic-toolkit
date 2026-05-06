@@ -1,0 +1,3 @@
+name: tia-safety-review
+description: Review TIA Portal PLC/HMI automation changes for safety, commissioning risk, hardware interaction, and human-in-the-loop approval requirements.
+license: MIT
