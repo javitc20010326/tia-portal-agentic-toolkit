@@ -22,6 +22,8 @@ Implemented:
 - Windows group membership check for `Siemens TIA Openness`.
 - MCP tools/list and tools/call support.
 - Semi-agentic export analysis for XML/SCL/AWL/CSV/Excel folders.
+- Semi-agentic import-pack generation for PLC/HMI engineering artifacts.
+- Axis-control starter pack generation: SCL UDTs, DB, FB, OB1 call example, suggested tag CSV, HMI plan, report, manifest, and manual import checklist.
 - Codex plugin metadata and skills catalog.
 - Multi-mode strategy: full agentic with Openness, semi-agentic with exports, advisory without TIA Portal.
 
@@ -75,6 +77,14 @@ For semi-agentic mode, manually export TIA Portal blocks/tags/UDTs to a folder a
 Analyze this TIA Portal export folder and document the project.
 ```
 
+To generate a useful pack without Openness, ask:
+
+```text
+Generate a TIA Portal V16 axis-control import pack for Axis1 in this output folder.
+```
+
+This produces SCL, CSV, HMI planning, and checklist files. It does not modify `.ap16`/`.zap16` project internals and does not download to hardware.
+
 ## Safety Model
 
 The MCP server should default to read-only exploration. Any tool that can modify a TIA Portal project, compile, download, start/stop simulation, or touch hardware must require explicit user approval at the Codex layer and should create backups/export artifacts first.
@@ -101,6 +111,9 @@ templates/                             Codex config examples
 - `tia_summarize_scl`
 - `tia_generate_export_documentation`
 - `tia_prepare_manual_import_checklist`
+- `tia_generate_axis_control_pack`
+- `tia_generate_plc_tag_table_csv`
+- `tia_generate_hmi_plan`
 - `tia_attach_running_portal` (stub in v0.1)
 
 ## References
