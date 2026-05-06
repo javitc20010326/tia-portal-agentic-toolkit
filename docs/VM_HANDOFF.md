@@ -44,6 +44,12 @@ Then run the V16 bridge:
 .\src\TiaPortalAgenticToolkit.OpennessBridge.V16\bin\Debug\net48\TiaPortalAgenticToolkit.OpennessBridge.V16.exe status
 ```
 
+Then check the selected capability mode:
+
+```powershell
+.\src\TiaPortalAgenticToolkit.OpennessBridge.V16\bin\Debug\net48\TiaPortalAgenticToolkit.OpennessBridge.V16.exe capabilities
+```
+
 Install for Codex inside the VM:
 
 ```powershell
