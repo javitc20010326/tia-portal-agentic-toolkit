@@ -1,0 +1,18 @@
+Name,DataType,LogicalAddress,Comment
+HMI_AxisCarla_Enable,Bool,,HMI command: enable axis.
+HMI_AxisCarla_Reset,Bool,,HMI command: reset axis fault.
+HMI_AxisCarla_JogPositive,Bool,,HMI command: jog positive.
+HMI_AxisCarla_JogNegative,Bool,,HMI command: jog negative.
+HMI_AxisCarla_MoveAbsolute,Bool,,HMI command: move absolute.
+HMI_AxisCarla_Stop,Bool,,HMI command: controlled stop.
+HMI_AxisCarla_TargetPosition,Real,,HMI setpoint: target position.
+HMI_AxisCarla_TargetVelocity,Real,,HMI display: target velocity.
+HMI_AxisCarla_ActualPosition,Real,,HMI display: actual position.
+I_AxisCarla_DriveReady,Bool,,Drive ready feedback. Assign real input address manually.
+I_AxisCarla_DriveFault,Bool,,Drive fault feedback. Assign real input address manually.
+I_AxisCarla_PositiveLimit,Bool,,Positive limit feedback. Assign real input address manually.
+I_AxisCarla_NegativeLimit,Bool,,Negative limit feedback. Assign real input address manually.
+Q_AxisCarla_EnableDrive,Bool,,Drive enable output. Assign real output address manually.
+Q_AxisCarla_MovePositive,Bool,,Positive movement command. Assign real output address manually.
+Q_AxisCarla_MoveNegative,Bool,,Negative movement command. Assign real output address manually.
+Q_AxisCarla_StopDrive,Bool,,Drive stop output. Assign real output address manually.
