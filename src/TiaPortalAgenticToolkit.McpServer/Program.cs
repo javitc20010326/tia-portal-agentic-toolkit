@@ -86,6 +86,9 @@ internal sealed class McpServer(TiaPortalSession tia)
             "tia_summarize_scl" => tia.SummarizeScl(ReadString(args, "filePath")),
             "tia_generate_export_documentation" => tia.GenerateExportDocumentation(ReadString(args, "folderPath")),
             "tia_prepare_manual_import_checklist" => tia.PrepareManualImportChecklist(ReadString(args, "folderPath")),
+            "tia_generate_axis_control_pack" => tia.GenerateAxisControlPack(ReadString(args, "outputFolder"), ReadNullableString(args, "projectName"), ReadNullableString(args, "axisName"), ReadNullableString(args, "userProfile"), ReadNullableString(args, "tiaVersion")),
+            "tia_generate_plc_tag_table_csv" => tia.GeneratePlcTagTableCsv(ReadString(args, "outputFolder"), ReadNullableString(args, "projectName"), ReadNullableString(args, "axisName"), ReadNullableString(args, "userProfile"), ReadNullableString(args, "tiaVersion")),
+            "tia_generate_hmi_plan" => tia.GenerateHmiPlan(ReadString(args, "outputFolder"), ReadNullableString(args, "projectName"), ReadNullableString(args, "axisName"), ReadNullableString(args, "userProfile"), ReadNullableString(args, "tiaVersion")),
             "tia_attach_running_portal" => tia.AttachToRunningPortal(ReadNullableInt(args, "processId")),
             _ => new { error = $"Unknown tool: {name}" }
         };
@@ -116,6 +119,17 @@ internal sealed class McpServer(TiaPortalSession tia)
             JsonValueKind.String when int.TryParse(value.GetValue<string>(), out var i) => i,
             _ => null
         };
+    }
+
+    private static string? ReadNullableString(JsonObject args, string name)
+    {
+        if (!args.TryGetPropertyValue(name, out var value) || value is null)
+        {
+            return null;
+        }
+
+        var text = value.GetValue<string>();
+        return string.IsNullOrWhiteSpace(text) ? null : text;
     }
 
     private static string ReadString(JsonObject args, string name)
@@ -318,6 +332,66 @@ internal static class ToolDefinitions
                     folderPath = new { type = "string", description = "Path to a folder containing candidate import artifacts." }
                 },
                 required = new[] { "folderPath" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_generate_axis_control_pack",
+            title = "Generate Axis Control Import Pack",
+            description = "Generate a semi-agentic TIA Portal engineering pack for a single position-control axis: SCL UDTs, DB, FB, OB1 call example, suggested PLC/HMI tags CSV, HMI screen plan, report, manifest, and manual import checklist. This does not modify a TIA project automatically.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    outputFolder = new { type = "string", description = "Folder where generated import artifacts will be written." },
+                    projectName = new { type = "string", description = "Optional project name used in documentation. Default TiaProject." },
+                    axisName = new { type = "string", description = "Optional axis identifier used for block/tag names. Default Axis1." },
+                    userProfile = new { type = "string", description = "Optional user profile: self, student, or plc_engineer. Default self." },
+                    tiaVersion = new { type = "string", description = "Optional TIA Portal target version such as V16, V17, V18, V19, V20, or V21. Default V16." }
+                },
+                required = new[] { "outputFolder" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_generate_plc_tag_table_csv",
+            title = "Generate PLC Tag Table CSV",
+            description = "Generate a suggested PLC/HMI tag table CSV and notes for manual adaptation/import in TIA Portal. Hardware addresses are intentionally left blank for human assignment.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    outputFolder = new { type = "string", description = "Folder where generated tag artifacts will be written." },
+                    projectName = new { type = "string", description = "Optional project name used in documentation. Default TiaProject." },
+                    axisName = new { type = "string", description = "Optional axis identifier used for tag names. Default Axis1." },
+                    userProfile = new { type = "string", description = "Optional user profile: self, student, or plc_engineer. Default self." },
+                    tiaVersion = new { type = "string", description = "Optional TIA Portal target version. Default V16." }
+                },
+                required = new[] { "outputFolder" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_generate_hmi_plan",
+            title = "Generate HMI Plan",
+            description = "Generate a Markdown HMI/WinCC screen plan with tags, alarms, operator behavior, and validation steps for a single axis.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    outputFolder = new { type = "string", description = "Folder where HMI_Screen_Plan.md will be written." },
+                    projectName = new { type = "string", description = "Optional project name used in documentation. Default TiaProject." },
+                    axisName = new { type = "string", description = "Optional axis identifier. Default Axis1." },
+                    userProfile = new { type = "string", description = "Optional user profile: self, student, or plc_engineer. Default self." },
+                    tiaVersion = new { type = "string", description = "Optional TIA Portal target version. Default V16." }
+                },
+                required = new[] { "outputFolder" },
                 additionalProperties = false
             }
         },
