@@ -1,0 +1,15 @@
+TYPE "AxisCarla_Command"
+VERSION : 0.1
+   STRUCT
+      Enable : Bool;          // Operator enables the axis command interface.
+      Reset : Bool;           // Reset command for faults and latched states.
+      JogPositive : Bool;     // Manual jog in positive direction.
+      JogNegative : Bool;     // Manual jog in negative direction.
+      MoveAbsolute : Bool;    // Start absolute move request.
+      Stop : Bool;            // Controlled stop request.
+      TargetPosition : Real;  // Engineering units.
+      Velocity : Real;        // Engineering units per second.
+      Acceleration : Real;    // Engineering units per second squared.
+      Deceleration : Real;    // Engineering units per second squared.
+   END_STRUCT;
+END_TYPE
