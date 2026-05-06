@@ -1,0 +1,165 @@
+FUNCTION_BLOCK "FB_AxisCarla_Control"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT
+      Command : "AxisCarla_Command";
+      ActualPosition : Real;
+      DriveReady : Bool;
+      DriveFault : Bool;
+      PositiveLimit : Bool;
+      NegativeLimit : Bool;
+      CycleTime : Time := T#100ms;
+   END_VAR
+
+   VAR_OUTPUT
+      Status : "AxisCarla_Status";
+      EnableDrive : Bool;
+      MovePositive : Bool;
+      MoveNegative : Bool;
+      StopDrive : Bool;
+      TargetPosition : Real;
+      TargetVelocity : Real;
+   END_VAR
+
+   VAR
+      state : Int := 0;
+      previousMoveAbsolute : Bool;
+      moveAbsoluteRise : Bool;
+      positionError : Real;
+   END_VAR
+
+BEGIN
+   moveAbsoluteRise := Command.MoveAbsolute AND NOT previousMoveAbsolute;
+   previousMoveAbsolute := Command.MoveAbsolute;
+
+   Status.Ready := DriveReady AND NOT DriveFault AND NOT Status.Error;
+   Status.ActualPosition := ActualPosition;
+   Status.State := state;
+   StopDrive := FALSE;
+   MovePositive := FALSE;
+   MoveNegative := FALSE;
+   EnableDrive := Command.Enable AND NOT Status.Error;
+   TargetVelocity := Command.Velocity;
+
+   IF Command.Reset THEN
+      Status.Error := FALSE;
+      Status.ErrorCode := W#16#0000;
+      Status.Done := FALSE;
+      state := 0;
+   END_IF;
+
+   IF DriveFault THEN
+      Status.Error := TRUE;
+      Status.ErrorCode := W#16#0100;
+      state := 900;
+   END_IF;
+
+   IF Command.JogPositive AND PositiveLimit THEN
+      Status.Error := TRUE;
+      Status.ErrorCode := W#16#0201;
+      state := 900;
+   END_IF;
+
+   IF Command.JogNegative AND NegativeLimit THEN
+      Status.Error := TRUE;
+      Status.ErrorCode := W#16#0202;
+      state := 900;
+   END_IF;
+
+   CASE state OF
+      0:
+         Status.StateText := 'Idle';
+         Status.Busy := FALSE;
+         Status.Done := FALSE;
+         Status.Moving := FALSE;
+         Status.AtTarget := FALSE;
+         StopDrive := TRUE;
+
+         IF Status.Ready AND Command.Enable THEN
+            state := 10;
+         END_IF;
+
+      10:
+         Status.StateText := 'Enabled';
+         Status.Enabled := TRUE;
+         StopDrive := FALSE;
+
+         IF NOT Command.Enable THEN
+            state := 0;
+         ELSIF Command.Stop THEN
+            state := 80;
+         ELSIF Command.JogPositive AND NOT PositiveLimit THEN
+            state := 20;
+         ELSIF Command.JogNegative AND NOT NegativeLimit THEN
+            state := 30;
+         ELSIF moveAbsoluteRise THEN
+            TargetPosition := Command.TargetPosition;
+            Status.TargetLatched := Command.TargetPosition;
+            state := 40;
+         END_IF;
+
+      20:
+         Status.StateText := 'Jog positive';
+         Status.Busy := TRUE;
+         Status.Moving := TRUE;
+         MovePositive := TRUE;
+
+         IF NOT Command.JogPositive OR Command.Stop OR PositiveLimit THEN
+            state := 80;
+         END_IF;
+
+      30:
+         Status.StateText := 'Jog negative';
+         Status.Busy := TRUE;
+         Status.Moving := TRUE;
+         MoveNegative := TRUE;
+
+         IF NOT Command.JogNegative OR Command.Stop OR NegativeLimit THEN
+            state := 80;
+         END_IF;
+
+      40:
+         Status.StateText := 'Move absolute';
+         Status.Busy := TRUE;
+         Status.Moving := TRUE;
+         positionError := Status.TargetLatched - ActualPosition;
+
+         IF ABS(positionError) <= 0.01 THEN
+            Status.Done := TRUE;
+            Status.AtTarget := TRUE;
+            state := 10;
+         ELSIF Command.Stop THEN
+            state := 80;
+         ELSIF positionError > 0.0 AND NOT PositiveLimit THEN
+            MovePositive := TRUE;
+         ELSIF positionError < 0.0 AND NOT NegativeLimit THEN
+            MoveNegative := TRUE;
+         ELSE
+            Status.Error := TRUE;
+            Status.ErrorCode := W#16#0300;
+            state := 900;
+         END_IF;
+
+      80:
+         Status.StateText := 'Stopping';
+         StopDrive := TRUE;
+         Status.Busy := FALSE;
+         Status.Moving := FALSE;
+
+         IF NOT Command.Stop THEN
+            state := 10;
+         END_IF;
+
+      900:
+         Status.StateText := 'Fault';
+         StopDrive := TRUE;
+         EnableDrive := FALSE;
+         Status.Busy := FALSE;
+         Status.Moving := FALSE;
+
+      ELSE
+         Status.Error := TRUE;
+         Status.ErrorCode := W#16#FFFF;
+         state := 900;
+   END_CASE;
+END_FUNCTION_BLOCK
