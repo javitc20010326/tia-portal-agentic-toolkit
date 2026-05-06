@@ -1,0 +1,3 @@
+name: tia-openness-setup
+description: Configure and validate Siemens TIA Portal Openness for Codex, including Windows group membership, Openness registry discovery, MCP configuration, firewall prompts, and safe first-run checks.
+license: MIT
