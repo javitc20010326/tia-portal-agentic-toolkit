@@ -12,3 +12,4 @@ backups/
 *.zap*
 *.al*
 *.db
+!testdata/**/*.db
