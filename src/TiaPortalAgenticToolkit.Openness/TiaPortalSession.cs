@@ -4,6 +4,7 @@ public sealed class TiaPortalSession
 {
     private readonly TiaEnvironmentProbe _probe = new();
     private readonly OfflineExportAnalyzer _offline = new();
+    private readonly ImportPackGenerator _importPacks = new();
 
     public TiaEnvironmentStatus GetEnvironmentStatus() => _probe.GetStatus();
 
@@ -23,6 +24,30 @@ public sealed class TiaPortalSession
 
     public DocumentationDraft PrepareManualImportChecklist(string folderPath) =>
         _offline.PrepareManualImportChecklist(folderPath);
+
+    public EngineeringPackResult GenerateAxisControlPack(
+        string outputFolder,
+        string? projectName,
+        string? axisName,
+        string? userProfile,
+        string? tiaVersion) =>
+        _importPacks.GenerateAxisControlPack(outputFolder, projectName, axisName, userProfile, tiaVersion);
+
+    public EngineeringPackResult GeneratePlcTagTableCsv(
+        string outputFolder,
+        string? projectName,
+        string? axisName,
+        string? userProfile,
+        string? tiaVersion) =>
+        _importPacks.GeneratePlcTagTableCsv(outputFolder, projectName, axisName, userProfile, tiaVersion);
+
+    public DocumentationDraft GenerateHmiPlan(
+        string outputFolder,
+        string? projectName,
+        string? axisName,
+        string? userProfile,
+        string? tiaVersion) =>
+        _importPacks.GenerateHmiPlan(outputFolder, projectName, axisName, userProfile, tiaVersion);
 
     public object AttachToRunningPortal(int? processId)
     {
