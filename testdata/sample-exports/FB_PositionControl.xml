@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <SW.Blocks.FB ID="0">
+    <AttributeList>
+      <Name>FB_PositionControl</Name>
+      <Number>1</Number>
+      <ProgrammingLanguage>SCL</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1">
+        <AttributeList>
+          <Text>Example position control block</Text>
+        </AttributeList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.FB>
+</Document>
