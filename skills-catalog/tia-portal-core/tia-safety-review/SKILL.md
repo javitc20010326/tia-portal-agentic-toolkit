@@ -15,3 +15,5 @@ Always call out:
 - what needs explicit human approval.
 
 Never recommend online download to a real PLC as an automatic action. Keep hardware deployment as a manual, reviewed step.
+
+Generated semi-agentic import packs are write-capable only after a human imports them into TIA Portal. Treat them as engineering proposals until they compile in a project copy and have been reviewed against the real wiring, drives, limits, and safety functions.
