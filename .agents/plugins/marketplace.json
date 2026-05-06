@@ -1,0 +1,20 @@
+{
+  "name": "tia-portal-agentic-toolkit-marketplace",
+  "interface": {
+    "displayName": "TIA Portal Agentic Toolkit"
+  },
+  "plugins": [
+    {
+      "name": "tia-portal-agentic-toolkit",
+      "source": {
+        "source": "local",
+        "path": "."
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    }
+  ]
+}
