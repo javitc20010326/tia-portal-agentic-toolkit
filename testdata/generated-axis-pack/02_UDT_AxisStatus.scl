@@ -1,0 +1,17 @@
+TYPE "AxisCarla_Status"
+VERSION : 0.1
+   STRUCT
+      Ready : Bool;
+      Busy : Bool;
+      Done : Bool;
+      Error : Bool;
+      ErrorCode : Word;
+      Enabled : Bool;
+      Moving : Bool;
+      AtTarget : Bool;
+      ActualPosition : Real;
+      TargetLatched : Real;
+      State : Int;
+      StateText : String[40];
+   END_STRUCT;
+END_TYPE
