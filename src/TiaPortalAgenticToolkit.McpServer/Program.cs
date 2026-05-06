@@ -79,7 +79,13 @@ internal sealed class McpServer(TiaPortalSession tia)
 
         object result = name switch
         {
+            "tia_capabilities" => tia.GetCapabilities(),
             "tia_environment_status" => tia.GetEnvironmentStatus(),
+            "tia_analyze_export_folder" => tia.AnalyzeExportFolder(ReadString(args, "folderPath"), ReadNullableInt(args, "maxFiles") ?? 200),
+            "tia_parse_block_xml" => tia.ParseBlockXml(ReadString(args, "filePath")),
+            "tia_summarize_scl" => tia.SummarizeScl(ReadString(args, "filePath")),
+            "tia_generate_export_documentation" => tia.GenerateExportDocumentation(ReadString(args, "folderPath")),
+            "tia_prepare_manual_import_checklist" => tia.PrepareManualImportChecklist(ReadString(args, "folderPath")),
             "tia_attach_running_portal" => tia.AttachToRunningPortal(ReadNullableInt(args, "processId")),
             _ => new { error = $"Unknown tool: {name}" }
         };
@@ -110,6 +116,16 @@ internal sealed class McpServer(TiaPortalSession tia)
             JsonValueKind.String when int.TryParse(value.GetValue<string>(), out var i) => i,
             _ => null
         };
+    }
+
+    private static string ReadString(JsonObject args, string name)
+    {
+        if (!args.TryGetPropertyValue(name, out var value) || value is null)
+        {
+            throw new ArgumentException($"Missing required argument: {name}");
+        }
+
+        return value.GetValue<string>();
     }
 
     private static JsonNode Result(JsonNode? id, object result)
@@ -202,6 +218,18 @@ internal static class ToolDefinitions
     [
         new
         {
+            name = "tia_capabilities",
+            title = "TIA Capabilities",
+            description = "Determine whether this installation can run full agentic Openness workflows, semi-agentic export-file workflows, or advisory-only workflows. Use this before choosing TIA Portal automation steps.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new { },
+                additionalProperties = false
+            }
+        },
+        new
+        {
             name = "tia_environment_status",
             title = "TIA Environment Status",
             description = "Inspect the local Windows/TIA Portal Openness environment: Openness registry keys, Siemens.Engineering.dll candidates, user group membership, running TIA Portal processes, and warnings.",
@@ -209,6 +237,87 @@ internal static class ToolDefinitions
             {
                 type = "object",
                 properties = new { },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_analyze_export_folder",
+            title = "Analyze TIA Export Folder",
+            description = "Analyze a folder of manually exported TIA Portal artifacts such as XML, SCL, AWL, CSV, and Excel files. Use this for semi-agentic mode when Openness permissions are unavailable.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    folderPath = new { type = "string", description = "Absolute or relative path to a folder containing TIA Portal exports." },
+                    maxFiles = new { type = "integer", description = "Maximum number of supported files to summarize. Default 200." }
+                },
+                required = new[] { "folderPath" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_parse_block_xml",
+            title = "Parse TIA Block XML",
+            description = "Parse a manually exported TIA Portal XML file and summarize root element, likely artifact name, common element counts, and interesting attributes/text.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    filePath = new { type = "string", description = "Path to an exported TIA Portal XML file." }
+                },
+                required = new[] { "filePath" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_summarize_scl",
+            title = "Summarize SCL Source",
+            description = "Summarize an SCL/AWL source file: declarations, variables, calls, comments, and warnings.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    filePath = new { type = "string", description = "Path to an SCL or AWL source file." }
+                },
+                required = new[] { "filePath" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_generate_export_documentation",
+            title = "Generate Export Documentation",
+            description = "Generate a Markdown documentation draft from a folder of exported TIA Portal artifacts.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    folderPath = new { type = "string", description = "Path to a folder containing exported TIA Portal artifacts." }
+                },
+                required = new[] { "folderPath" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_prepare_manual_import_checklist",
+            title = "Prepare Manual Import Checklist",
+            description = "Create a Markdown checklist for manually importing generated/exported artifacts into TIA Portal when Openness is unavailable.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    folderPath = new { type = "string", description = "Path to a folder containing candidate import artifacts." }
+                },
+                required = new[] { "folderPath" },
                 additionalProperties = false
             }
         },
