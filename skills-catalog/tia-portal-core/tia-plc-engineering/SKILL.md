@@ -7,6 +7,16 @@ description: Work with TIA Portal PLC projects using Openness exports, SCL/LAD/F
 
 Default to read-only inspection. Before modifying a project, export the affected block/type/tag table and propose a concise change plan.
 
+If Openness is unavailable, switch to semi-agentic mode: ask the user for exported XML/SCL/CSV/Excel artifacts, analyze them, and prepare manual import instructions.
+
+Use semi-agentic tools when available:
+
+- `tia_analyze_export_folder` for the whole export folder.
+- `tia_parse_block_xml` for individual XML artifacts.
+- `tia_summarize_scl` for SCL/AWL source.
+- `tia_generate_export_documentation` for report drafts.
+- `tia_prepare_manual_import_checklist` before the user imports anything manually.
+
 Preferred workflow:
 
 1. Inspect project/environment with MCP status tools.
