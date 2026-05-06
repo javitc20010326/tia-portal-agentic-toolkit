@@ -1,0 +1,17 @@
+// Copy this call into OB1 or another cyclic block after importing the UDTs, DB, and FB.
+// Replace the hardware feedback and command outputs with real project tags.
+
+"FB_AxisCarla_Control"(
+   Command := "DB_AxisCarla_Data".Command,
+   ActualPosition := "HMI_AxisCarla_ActualPosition",
+   DriveReady := "I_AxisCarla_DriveReady",
+   DriveFault := "I_AxisCarla_DriveFault",
+   PositiveLimit := "I_AxisCarla_PositiveLimit",
+   NegativeLimit := "I_AxisCarla_NegativeLimit",
+   Status => "DB_AxisCarla_Data".Status,
+   EnableDrive => "Q_AxisCarla_EnableDrive",
+   MovePositive => "Q_AxisCarla_MovePositive",
+   MoveNegative => "Q_AxisCarla_MoveNegative",
+   StopDrive => "Q_AxisCarla_StopDrive",
+   TargetPosition => "HMI_AxisCarla_TargetLatched",
+   TargetVelocity => "HMI_AxisCarla_TargetVelocity");
