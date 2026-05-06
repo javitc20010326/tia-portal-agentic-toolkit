@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>TiaPortalAgenticToolkit.OpennessBridge.V16</AssemblyName>
+    <RootNamespace>TiaPortalAgenticToolkit.OpennessBridge.V16</RootNamespace>
+  </PropertyGroup>
+</Project>
