@@ -21,6 +21,8 @@ Do not upload `bin/` or `obj/` folders.
 - `docs/GITHUB_UPLOAD_MANIFEST.md`
 - `docs/NEXT_STEPS.md`
 - `docs/ROADMAP.md`
+- `docs/CAPABILITY_MODES.md`
+- `docs/SEMI_AGENTIC_WORKFLOW.md`
 - `docs/TIA_OPENNESS_REQUIREMENTS.md`
 - `docs/VM_HANDOFF.md`
 - `docs/issues/01-openness-attach.md`
@@ -48,7 +50,10 @@ Do not upload `bin/` or `obj/` folders.
 - `src/TiaPortalAgenticToolkit.McpServer/Program.cs`
 - `src/TiaPortalAgenticToolkit.Openness/TiaPortalAgenticToolkit.Openness.csproj`
 - `src/TiaPortalAgenticToolkit.Openness/TiaEnvironmentProbe.cs`
+- `src/TiaPortalAgenticToolkit.Openness/OfflineExportAnalyzer.cs`
 - `src/TiaPortalAgenticToolkit.Openness/TiaPortalSession.cs`
 - `src/TiaPortalAgenticToolkit.OpennessBridge.V16/TiaPortalAgenticToolkit.OpennessBridge.V16.csproj`
 - `src/TiaPortalAgenticToolkit.OpennessBridge.V16/Program.cs`
 - `templates/codex-config.toml`
+- `testdata/sample-exports/FB_PositionControl.scl`
+- `testdata/sample-exports/FB_PositionControl.xml`
