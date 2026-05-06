@@ -1,6 +1,12 @@
 # Capability Modes
 
-The toolkit must support several user environments. Not every student or engineer has administrator rights, Openness access, or even TIA Portal installed locally.
+The toolkit must support several user environments. The first target user can be one engineer working alone, but the same repo should also work for students, teachers, or PLC engineers. Not every user has administrator rights, Openness access, or even TIA Portal installed locally.
+
+User profile is advisory, not a permission gate:
+
+- `self`: practical defaults for the owner of the project.
+- `student`: extra review language and lab-safe warnings.
+- `plc_engineer`: compact engineering language and naming-conscious outputs.
 
 ## Modes
 
@@ -34,7 +40,7 @@ Requirements:
 Capabilities:
 
 - analyze exported XML/SCL/CSV/Excel,
-- generate SCL and documentation,
+- generate SCL, DB/UDT starter artifacts, tag CSV drafts, HMI plans, and documentation,
 - review naming and structure,
 - prepare import-ready artifacts for manual import,
 - explain TIA workflows step by step.
@@ -46,6 +52,9 @@ Core tools:
 - `tia_summarize_scl`
 - `tia_generate_export_documentation`
 - `tia_prepare_manual_import_checklist`
+- `tia_generate_axis_control_pack`
+- `tia_generate_plc_tag_table_csv`
+- `tia_generate_hmi_plan`
 
 ### Advisory
 
