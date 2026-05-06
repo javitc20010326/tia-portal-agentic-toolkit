@@ -1,0 +1,62 @@
+{
+  "schema": "tia-portal-agentic-toolkit.import-pack.v1",
+  "packKind": "axis_position_control",
+  "generatedAtUtc": "2026-05-06T20:55:26.0428788+00:00",
+  "projectName": "Proyecto3_Carla",
+  "axisName": "AxisCarla",
+  "userProfile": "self",
+  "tiaVersion": "V16",
+  "files": [
+    {
+      "path": "01_UDT_AxisCommand.scl",
+      "kind": "scl-udt",
+      "purpose": "Axis command user data type."
+    },
+    {
+      "path": "02_UDT_AxisStatus.scl",
+      "kind": "scl-udt",
+      "purpose": "Axis status user data type."
+    },
+    {
+      "path": "03_DB_AxisData.scl",
+      "kind": "scl-db",
+      "purpose": "Shared axis command/status data block."
+    },
+    {
+      "path": "04_FB_AxisControl.scl",
+      "kind": "scl-fb",
+      "purpose": "Defensive position-control state machine starter block."
+    },
+    {
+      "path": "05_OB1_Call_Example.scl",
+      "kind": "scl-snippet",
+      "purpose": "Example call for OB1 or a cyclic organization block."
+    },
+    {
+      "path": "PLC_Tags_Suggested.csv",
+      "kind": "tag-table-csv",
+      "purpose": "Suggested PLC/HMI tag table. Verify column mapping in TIA Portal before import."
+    },
+    {
+      "path": "HMI_Screen_Plan.md",
+      "kind": "hmi-plan",
+      "purpose": "WinCC/TIA HMI screen layout, tags, alarms, and operator behavior."
+    },
+    {
+      "path": "Practice_Report.md",
+      "kind": "engineering-report",
+      "purpose": "Engineering explanation suitable for review or class/lab reporting."
+    },
+    {
+      "path": "MANUAL_IMPORT_CHECKLIST.md",
+      "kind": "manual-checklist",
+      "purpose": "Manual import and validation checklist for semi-agentic mode."
+    }
+  ],
+  "safety": {
+    "modifiesProjectAutomatically": false,
+    "hardwareDownload": false,
+    "requiresHumanImport": true,
+    "requiresCompileBeforeUse": true
+  }
+}
