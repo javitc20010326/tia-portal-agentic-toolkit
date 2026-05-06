@@ -3,8 +3,26 @@ namespace TiaPortalAgenticToolkit.Openness;
 public sealed class TiaPortalSession
 {
     private readonly TiaEnvironmentProbe _probe = new();
+    private readonly OfflineExportAnalyzer _offline = new();
 
     public TiaEnvironmentStatus GetEnvironmentStatus() => _probe.GetStatus();
+
+    public TiaCapabilities GetCapabilities() => _probe.GetCapabilities();
+
+    public ExportFolderSummary AnalyzeExportFolder(string folderPath, int maxFiles = 200) =>
+        _offline.AnalyzeFolder(folderPath, maxFiles);
+
+    public XmlArtifactSummary ParseBlockXml(string filePath) =>
+        _offline.ParseXml(filePath);
+
+    public SclSummary SummarizeScl(string filePath) =>
+        _offline.SummarizeScl(filePath);
+
+    public DocumentationDraft GenerateExportDocumentation(string folderPath) =>
+        _offline.GenerateDocumentation(folderPath);
+
+    public DocumentationDraft PrepareManualImportChecklist(string folderPath) =>
+        _offline.PrepareManualImportChecklist(folderPath);
 
     public object AttachToRunningPortal(int? processId)
     {
