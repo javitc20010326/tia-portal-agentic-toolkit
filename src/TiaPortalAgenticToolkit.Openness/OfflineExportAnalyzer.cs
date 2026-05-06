@@ -44,7 +44,9 @@ public sealed class OfflineExportAnalyzer
 {
     private static readonly HashSet<string> SupportedExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
-        ".xml", ".scl", ".awl", ".db", ".csv", ".xlsx", ".txt"
+        ".xml", ".scl", ".awl", ".db", ".csv", ".xlsx", ".txt",
+        ".ap16", ".ap17", ".ap18", ".ap19", ".ap20", ".ap21",
+        ".zap16", ".zap17", ".zap18", ".zap19", ".zap20", ".zap21"
     };
 
     public ExportFolderSummary AnalyzeFolder(string folderPath, int maxFiles = 200)
@@ -260,6 +262,8 @@ public sealed class OfflineExportAnalyzer
         {
             return extension switch
             {
+                ".ap16" or ".ap17" or ".ap18" or ".ap19" or ".ap20" or ".ap21" => SummarizeTiaProjectFile(info),
+                ".zap16" or ".zap17" or ".zap18" or ".zap19" or ".zap20" or ".zap21" => new FileSummary(info.FullName, extension, info.Length, "tia-portal-archive", Path.GetFileNameWithoutExtension(info.Name), "Archived TIA Portal project; open in TIA Portal to export blocks for semi-agentic analysis."),
                 ".xml" => SummarizeXmlFile(info),
                 ".scl" or ".awl" => SummarizeCodeFile(info),
                 ".csv" => new FileSummary(info.FullName, extension, info.Length, "tag-table-or-tabular-export", null, "CSV/tabular export"),
@@ -270,6 +274,27 @@ public sealed class OfflineExportAnalyzer
         catch (Exception ex)
         {
             return new FileSummary(info.FullName, extension, info.Length, "unreadable", null, ex.Message);
+        }
+    }
+
+    private FileSummary SummarizeTiaProjectFile(FileInfo info)
+    {
+        try
+        {
+            var doc = XDocument.Load(info.FullName);
+            var root = doc.Root;
+            var name = root?.Attribute("Name")?.Value ?? Path.GetFileNameWithoutExtension(info.Name);
+            var ns = root?.GetDefaultNamespace() ?? XNamespace.None;
+            var version = root?.Attribute("ProjectCompatibilityVersion")?.Value
+                ?? root?.Element(ns + "ProjectVersion")?.Value;
+            var detail = string.IsNullOrWhiteSpace(version)
+                ? "TIA Portal project metadata file. Export PLC blocks/XML/SCL manually for deeper semi-agentic analysis."
+                : $"TIA Portal project metadata. Compatibility={version}. Export PLC blocks/XML/SCL manually for deeper semi-agentic analysis.";
+            return new FileSummary(info.FullName, info.Extension.ToLowerInvariant(), info.Length, "tia-portal-project", name, detail);
+        }
+        catch (Exception ex)
+        {
+            return new FileSummary(info.FullName, info.Extension.ToLowerInvariant(), info.Length, "tia-portal-project", Path.GetFileNameWithoutExtension(info.Name), $"Could not parse project metadata: {ex.Message}");
         }
     }
 
