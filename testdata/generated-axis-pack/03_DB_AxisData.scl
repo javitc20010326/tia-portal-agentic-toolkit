@@ -1,0 +1,12 @@
+DATA_BLOCK "DB_AxisCarla_Data"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR
+      Command : "AxisCarla_Command";
+      Status : "AxisCarla_Status";
+   END_VAR
+BEGIN
+   Command.Velocity := 10.0;
+   Command.Acceleration := 50.0;
+   Command.Deceleration := 50.0;
+END_DATA_BLOCK
