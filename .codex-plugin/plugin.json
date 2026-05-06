@@ -1,0 +1,16 @@
+{
+  "name": "tia-portal-agentic-toolkit",
+  "version": "0.1.0",
+  "description": "Codex skills and MCP tools for Siemens TIA Portal automation through TIA Portal Openness.",
+  "author": {
+    "name": "Javi / contributors"
+  },
+  "license": "MIT",
+  "keywords": ["tia-portal", "siemens", "openness", "plc", "hmi", "mcp", "automation"],
+  "skills": "./skills-catalog/",
+  "interface": {
+    "displayName": "TIA Portal Agentic Toolkit",
+    "shortDescription": "Skills and MCP tools for TIA Portal Openness workflows.",
+    "category": "Development"
+  }
+}
