@@ -23,6 +23,9 @@ namespace TiaPortalAgenticToolkit.OpennessBridge.V16
                     case "status":
                         PrintStatus();
                         return 0;
+                    case "capabilities":
+                        PrintCapabilities();
+                        return 0;
                     case "assemblies":
                         foreach (var path in FindEngineeringAssemblies())
                         {
@@ -30,7 +33,7 @@ namespace TiaPortalAgenticToolkit.OpennessBridge.V16
                         }
                         return 0;
                     default:
-                        Console.Error.WriteLine("Unknown command. Supported: status, assemblies");
+                        Console.Error.WriteLine("Unknown command. Supported: status, capabilities, assemblies");
                         return 2;
                 }
             }
@@ -71,6 +74,30 @@ namespace TiaPortalAgenticToolkit.OpennessBridge.V16
                 Console.WriteLine(i == processes.Count - 1 ? "" : ",");
             }
             Console.WriteLine("  ]");
+            Console.WriteLine("}");
+        }
+
+        private static void PrintCapabilities()
+        {
+            var inGroup = IsInOpennessGroup();
+            var keys = ReadOpennessRegistryKeys().ToList();
+            var assemblies = FindEngineeringAssemblies().ToList();
+            var canUseOpenness = keys.Count > 0 && assemblies.Count > 0 && inGroup;
+            var mode = canUseOpenness ? "full_agentic" : (keys.Count > 0 || assemblies.Count > 0 ? "semi_agentic" : "advisory");
+            var nextAction = canUseOpenness
+                ? "Open TIA Portal V16 and a non-production project, then run read-only project inspection first."
+                : "Continue with exported files, or ask an administrator to add this user to Siemens TIA Openness for full agentic mode.";
+
+            Console.WriteLine("{");
+            Console.WriteLine("  \"mode\": " + Json(mode) + ",");
+            Console.WriteLine("  \"recommendedVersion\": " + Json("V16") + ",");
+            Console.WriteLine("  \"canUseOpenness\": " + canUseOpenness.ToString().ToLowerInvariant() + ",");
+            Console.WriteLine("  \"canUseExports\": true,");
+            Console.WriteLine("  \"canProvideAdvisory\": true,");
+            Console.WriteLine("  \"userInOpennessGroup\": " + inGroup.ToString().ToLowerInvariant() + ",");
+            Console.WriteLine("  \"opennessInstalled\": " + (keys.Count > 0).ToString().ToLowerInvariant() + ",");
+            Console.WriteLine("  \"engineeringAssembliesFound\": " + (assemblies.Count > 0).ToString().ToLowerInvariant() + ",");
+            Console.WriteLine("  \"nextAction\": " + Json(nextAction));
             Console.WriteLine("}");
         }
 
