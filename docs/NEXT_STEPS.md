@@ -8,6 +8,7 @@
 - The server detects whether TIA Portal Openness appears to be installed.
 - The server checks whether the current Windows user is in `Siemens TIA Openness`.
 - Codex skills are available globally after running `scripts/install-codex.ps1`.
+- The architecture supports future full/semi/advisory modes.
 
 ## What needs a TIA Portal machine
 
@@ -25,12 +26,14 @@ Without that environment, this repo can compile and validate MCP plumbing, but i
 
 Implement and test:
 
-1. Dynamic load of `Siemens.Engineering.dll`.
-2. Attach to a running TIA Portal process.
-3. Open/read current project metadata.
-4. Enumerate devices, PLC software, blocks, and tag tables.
-5. Export selected blocks/UDTs/tag tables to a folder.
-6. Compile PLC software and return diagnostics.
+1. `tia_capabilities` mode detection.
+2. Dynamic load of `Siemens.Engineering.dll`.
+3. Attach to a running TIA Portal process.
+4. Open/read current project metadata.
+5. Enumerate devices, PLC software, blocks, and tag tables.
+6. Export selected blocks/UDTs/tag tables to a folder.
+7. Compile PLC software and return diagnostics.
+8. Semi-agentic export parser for users without Openness permissions.
 
 Important: Siemens documents Openness programming against .NET Framework 4.8 / Siemens.Engineering assemblies. The current MCP server validates Codex/MCP plumbing; the next real implementation step is a Windows-only Openness bridge that runs on the TIA Portal machine.
 
