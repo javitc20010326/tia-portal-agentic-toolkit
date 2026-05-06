@@ -1,0 +1,54 @@
+# GitHub Upload Manifest
+
+Upload these source files to a new empty GitHub repository.
+
+Do not upload `bin/` or `obj/` folders.
+
+## Required Files
+
+- `.github/workflows/build.yml`
+- `.agents/plugins/marketplace.json`
+- `.codex-plugin/plugin.json`
+- `.gitignore`
+- `GETTING_STARTED.md`
+- `LICENSE`
+- `README.md`
+- `SECURITY.md`
+- `TiaPortalAgenticToolkit.sln`
+- `VERSION`
+- `docs/ARCHITECTURE.md`
+- `docs/GITHUB_PUBLISHING.md`
+- `docs/GITHUB_UPLOAD_MANIFEST.md`
+- `docs/NEXT_STEPS.md`
+- `docs/ROADMAP.md`
+- `docs/TIA_OPENNESS_REQUIREMENTS.md`
+- `docs/VM_HANDOFF.md`
+- `docs/issues/01-openness-attach.md`
+- `docs/issues/02-project-overview.md`
+- `docs/issues/03-export-plc-artifacts.md`
+- `docs/issues/04-compile-diagnostics.md`
+- `scripts/build.ps1`
+- `scripts/install-codex.ps1`
+- `scripts/pack-source.ps1`
+- `scripts/vm-first-check.ps1`
+- `scripts/upload-github.ps1`
+- `skills-catalog/tia-portal-core/tia-hmi-engineering/manifest.yaml`
+- `skills-catalog/tia-portal-core/tia-hmi-engineering/SKILL.md`
+- `skills-catalog/tia-portal-core/tia-openness-setup/manifest.yaml`
+- `skills-catalog/tia-portal-core/tia-openness-setup/SKILL.md`
+- `skills-catalog/tia-portal-core/tia-plc-engineering/manifest.yaml`
+- `skills-catalog/tia-portal-core/tia-plc-engineering/SKILL.md`
+- `skills-catalog/tia-portal-core/tia-safety-review/manifest.yaml`
+- `skills-catalog/tia-portal-core/tia-safety-review/SKILL.md`
+- `skills-catalog/toolkit/tia-agentic-toolkit-setup/manifest.yaml`
+- `skills-catalog/toolkit/tia-agentic-toolkit-setup/SKILL.md`
+- `skills-catalog/toolkit/tia-agentic-toolkit-setup/scripts/install-codex-mcp.ps1`
+- `skills-catalog/toolkit/tia-agentic-toolkit-setup/scripts/install-global-skills.ps1`
+- `src/TiaPortalAgenticToolkit.McpServer/TiaPortalAgenticToolkit.McpServer.csproj`
+- `src/TiaPortalAgenticToolkit.McpServer/Program.cs`
+- `src/TiaPortalAgenticToolkit.Openness/TiaPortalAgenticToolkit.Openness.csproj`
+- `src/TiaPortalAgenticToolkit.Openness/TiaEnvironmentProbe.cs`
+- `src/TiaPortalAgenticToolkit.Openness/TiaPortalSession.cs`
+- `src/TiaPortalAgenticToolkit.OpennessBridge.V16/TiaPortalAgenticToolkit.OpennessBridge.V16.csproj`
+- `src/TiaPortalAgenticToolkit.OpennessBridge.V16/Program.cs`
+- `templates/codex-config.toml`
