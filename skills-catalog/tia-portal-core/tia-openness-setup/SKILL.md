@@ -7,6 +7,12 @@ description: Configure and validate Siemens TIA Portal Openness for Codex, inclu
 
 Use the `tia_environment_status` MCP tool first. It reports whether the MCP server can see Siemens Openness registry keys, whether the user appears to be in the `Siemens TIA Openness` Windows group, and which Siemens.Engineering assemblies may be available.
 
+If `tia_capabilities` is available, use it before any version-specific workflow. Respect its mode:
+
+- `full_agentic`: Openness workflows are available.
+- `semi_agentic`: use exported artifacts and manual import/export.
+- `advisory`: provide design/code/documentation guidance without local TIA access.
+
 If Openness access fails:
 
 1. Confirm TIA Portal is installed with Openness.
@@ -16,3 +22,5 @@ If Openness access fails:
 5. Explain the TIA Portal Openness firewall prompt and verify the executable path before approval.
 
 For Windows TOML paths in Codex config, use single-quoted strings.
+
+Do not assume a fixed TIA Portal version. Prefer the newest detected compatible version unless the user asks for a specific version such as V16 or V17.
