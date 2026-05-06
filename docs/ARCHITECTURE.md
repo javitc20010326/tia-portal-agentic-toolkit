@@ -25,6 +25,7 @@ Note: real Siemens.Engineering calls should run on the TIA Portal workstation/VM
 Read-only first:
 
 - `tia_environment_status`
+- `tia_capabilities`
 - `tia_list_portal_processes`
 - `tia_attach_running_portal`
 - `tia_project_overview`
