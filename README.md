@@ -21,7 +21,9 @@ Implemented:
 - Environment detection for TIA Portal Openness registry keys.
 - Windows group membership check for `Siemens TIA Openness`.
 - MCP tools/list and tools/call support.
+- Semi-agentic export analysis for XML/SCL/AWL/CSV/Excel folders.
 - Codex plugin metadata and skills catalog.
+- Multi-mode strategy: full agentic with Openness, semi-agentic with exports, advisory without TIA Portal.
 
 Planned:
 
@@ -34,11 +36,13 @@ Planned:
 
 ## Requirements
 
-- Windows.
-- TIA Portal with TIA Portal Openness installed.
-- User added to the local Windows group `Siemens TIA Openness`.
+- Windows for full agentic mode.
+- TIA Portal with TIA Portal Openness installed for full agentic mode.
+- User added to the local Windows group `Siemens TIA Openness` for full agentic mode.
 - .NET 8 SDK or runtime.
 - OpenAI Codex with MCP support.
+
+Without Openness permissions, the toolkit should still work in semi-agentic mode over exported XML/SCL/CSV/Excel artifacts.
 
 Siemens documents that TIA Portal Openness is an API for automating engineering workflows, and that access requires the local `Siemens TIA Openness` Windows group plus the TIA Portal Openness firewall prompt.
 
@@ -65,6 +69,12 @@ Restart Codex and ask:
 Check my TIA Portal Openness environment.
 ```
 
+For semi-agentic mode, manually export TIA Portal blocks/tags/UDTs to a folder and ask:
+
+```text
+Analyze this TIA Portal export folder and document the project.
+```
+
 ## Safety Model
 
 The MCP server should default to read-only exploration. Any tool that can modify a TIA Portal project, compile, download, start/stop simulation, or touch hardware must require explicit user approval at the Codex layer and should create backups/export artifacts first.
@@ -81,6 +91,17 @@ src/TiaPortalAgenticToolkit.McpServer  MCP stdio server
 src/TiaPortalAgenticToolkit.Openness   Openness adapter layer
 templates/                             Codex config examples
 ```
+
+## MCP Tools
+
+- `tia_capabilities`
+- `tia_environment_status`
+- `tia_analyze_export_folder`
+- `tia_parse_block_xml`
+- `tia_summarize_scl`
+- `tia_generate_export_documentation`
+- `tia_prepare_manual_import_checklist`
+- `tia_attach_running_portal` (stub in v0.1)
 
 ## References
 
