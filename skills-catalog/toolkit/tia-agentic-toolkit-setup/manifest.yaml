@@ -1,0 +1,3 @@
+name: tia-agentic-toolkit-setup
+description: Install and configure the TIA Portal Agentic Toolkit for Codex, including MCP server build, global config, skills links, and Openness validation.
+license: MIT
