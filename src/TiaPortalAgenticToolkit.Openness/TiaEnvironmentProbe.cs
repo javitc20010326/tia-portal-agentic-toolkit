@@ -15,6 +15,19 @@ public sealed record TiaEnvironmentStatus(
     IReadOnlyList<RunningPortalProcess> RunningPortalProcesses,
     IReadOnlyList<string> Warnings);
 
+public sealed record TiaCapabilities(
+    string Mode,
+    string? RecommendedVersion,
+    IReadOnlyList<string> TiaPortalVersions,
+    bool CanUseOpenness,
+    bool CanUseExports,
+    bool CanProvideAdvisory,
+    bool UserInOpennessGroup,
+    bool OpennessInstalled,
+    bool EngineeringAssembliesFound,
+    string NextAction,
+    TiaEnvironmentStatus Status);
+
 public sealed record OpennessVersionInfo(string Version, string RegistryPath, IReadOnlyDictionary<string, string> Values);
 
 public sealed record RunningPortalProcess(int Id, string ProcessName, string? MainWindowTitle, string? FileName);
@@ -57,6 +70,64 @@ public sealed class TiaEnvironmentProbe
             EngineeringAssemblyCandidates: assemblies,
             RunningPortalProcesses: processes,
             Warnings: warnings);
+    }
+
+    public TiaCapabilities GetCapabilities()
+    {
+        var status = GetStatus();
+        var versions = status.OpennessVersions
+            .Select(v => NormalizeVersion(v.Version))
+            .Where(v => !string.IsNullOrWhiteSpace(v))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(v => v, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        var opennessInstalled = status.OpennessVersions.Count > 0;
+        var assembliesFound = status.EngineeringAssemblyCandidates.Count > 0;
+        var canUseOpenness = status.IsWindows && opennessInstalled && assembliesFound && status.IsUserInOpennessGroup;
+
+        string mode;
+        string nextAction;
+        if (canUseOpenness)
+        {
+            mode = "full_agentic";
+            nextAction = "Open TIA Portal and a non-production project, then use read-only project inspection tools first.";
+        }
+        else if (status.IsWindows && (opennessInstalled || assembliesFound))
+        {
+            mode = "semi_agentic";
+            nextAction = status.IsUserInOpennessGroup
+                ? "Openness is partially detected but not fully usable. Continue with exported files while checking installation paths."
+                : "Continue with exported files, or ask an administrator to add the user to Siemens TIA Openness for full agentic mode.";
+        }
+        else
+        {
+            mode = "advisory";
+            nextAction = "Provide exported XML/SCL/CSV/Excel artifacts for semi-agentic analysis, or install TIA Portal Openness for full agentic mode.";
+        }
+
+        return new TiaCapabilities(
+            Mode: mode,
+            RecommendedVersion: versions.LastOrDefault(),
+            TiaPortalVersions: versions,
+            CanUseOpenness: canUseOpenness,
+            CanUseExports: true,
+            CanProvideAdvisory: true,
+            UserInOpennessGroup: status.IsUserInOpennessGroup,
+            OpennessInstalled: opennessInstalled,
+            EngineeringAssembliesFound: assembliesFound,
+            NextAction: nextAction,
+            Status: status);
+    }
+
+    private static string NormalizeVersion(string version)
+    {
+        if (version.StartsWith("V", StringComparison.OrdinalIgnoreCase))
+        {
+            return version.ToUpperInvariant();
+        }
+
+        return version.Split('.')[0] is { Length: > 0 } major ? "V" + major : version;
     }
 
     private static string ReadToolkitVersion()
