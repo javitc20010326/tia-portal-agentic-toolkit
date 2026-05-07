@@ -89,6 +89,12 @@ internal sealed class McpServer(TiaPortalSession tia)
             "tia_generate_axis_control_pack" => tia.GenerateAxisControlPack(ReadString(args, "outputFolder"), ReadNullableString(args, "projectName"), ReadNullableString(args, "axisName"), ReadNullableString(args, "userProfile"), ReadNullableString(args, "tiaVersion")),
             "tia_generate_plc_tag_table_csv" => tia.GeneratePlcTagTableCsv(ReadString(args, "outputFolder"), ReadNullableString(args, "projectName"), ReadNullableString(args, "axisName"), ReadNullableString(args, "userProfile"), ReadNullableString(args, "tiaVersion")),
             "tia_generate_hmi_plan" => tia.GenerateHmiPlan(ReadString(args, "outputFolder"), ReadNullableString(args, "projectName"), ReadNullableString(args, "axisName"), ReadNullableString(args, "userProfile"), ReadNullableString(args, "tiaVersion")),
+            "tia_generate_logic_template_pack" => tia.GenerateLogicTemplatePack(ReadString(args, "outputFolder"), ReadNullableString(args, "projectName"), ReadNullableString(args, "axisName"), ReadNullableString(args, "tiaVersion"), ReadNullableBool(args, "includeHmi") ?? true),
+            "tia_generate_ui_agent_plan" => tia.GenerateUiAgentPlan(ReadString(args, "outputFolder"), ReadNullableString(args, "projectPath"), ReadNullableString(args, "importPackFolder"), ReadNullableString(args, "tiaVersion"), ReadNullableString(args, "automationProfile")),
+            "tia_analyze_project_texts_xlsx" => tia.AnalyzeProjectTextsXlsx(ReadString(args, "filePath")),
+            "tia_analyze_webserver_bindings" => tia.AnalyzeWebServerBindings(ReadString(args, "path")),
+            "tia_analyze_db_source" => tia.AnalyzeDbSource(ReadString(args, "filePath")),
+            "tia_analyze_pdf_printout_text" => tia.AnalyzePdfPrintoutText(ReadString(args, "filePath")),
             "tia_attach_running_portal" => tia.AttachToRunningPortal(ReadNullableInt(args, "processId")),
             _ => new { error = $"Unknown tool: {name}" }
         };
@@ -130,6 +136,22 @@ internal sealed class McpServer(TiaPortalSession tia)
 
         var text = value.GetValue<string>();
         return string.IsNullOrWhiteSpace(text) ? null : text;
+    }
+
+    private static bool? ReadNullableBool(JsonObject args, string name)
+    {
+        if (!args.TryGetPropertyValue(name, out var value) || value is null)
+        {
+            return null;
+        }
+
+        return value.GetValueKind() switch
+        {
+            JsonValueKind.True => true,
+            JsonValueKind.False => false,
+            JsonValueKind.String when bool.TryParse(value.GetValue<string>(), out var result) => result,
+            _ => null
+        };
     }
 
     private static string ReadString(JsonObject args, string name)
@@ -392,6 +414,110 @@ internal static class ToolDefinitions
                     tiaVersion = new { type = "string", description = "Optional TIA Portal target version. Default V16." }
                 },
                 required = new[] { "outputFolder" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_generate_logic_template_pack",
+            title = "Generate LAD/FBD/HMI Template Pack",
+            description = "Generate neutral LAD, FBD, and optional HMI template artifacts for a TIA Portal axis workflow. These are template IR files and readable network plans; real TIA XML rendering requires seed exports from the same TIA Portal major version.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    outputFolder = new { type = "string", description = "Folder where template artifacts will be written." },
+                    projectName = new { type = "string", description = "Optional project name used in documentation. Default TiaProject." },
+                    axisName = new { type = "string", description = "Optional axis identifier used for block/tag names. Default Axis1." },
+                    tiaVersion = new { type = "string", description = "Optional TIA Portal target version. Default V16." },
+                    includeHmi = new { type = "boolean", description = "Whether to include neutral HMI screen templates. Default true." }
+                },
+                required = new[] { "outputFolder" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_generate_ui_agent_plan",
+            title = "Generate TIA UI Agent Plan",
+            description = "Generate a runnable plan for experimental TIA Portal desktop automation without Openness. The plan is consumed by scripts/ui-agent/tia-ui-agent.ps1 and can detect/open/focus TIA, prepare import packs, and capture state.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    outputFolder = new { type = "string", description = "Folder where UI-agent plan files will be written." },
+                    projectPath = new { type = "string", description = "Optional path to a TIA project file such as .ap16. The UI agent opens it through Windows file association." },
+                    importPackFolder = new { type = "string", description = "Optional folder containing generated SCL/CSV/XML/template files to import." },
+                    tiaVersion = new { type = "string", description = "Optional TIA Portal target version. Default V16." },
+                    automationProfile = new { type = "string", description = "dry-run, guided, or aggressive. Default guided." }
+                },
+                required = new[] { "outputFolder" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_analyze_project_texts_xlsx",
+            title = "Analyze TIA Project Texts XLSX",
+            description = "Analyze a TIA Portal project texts workbook exported as XLSX. Extracts category counts, HMI screen names, HMI object types, PLC block references, and sample texts without requiring Excel or Openness.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    filePath = new { type = "string", description = "Path to TIAProjectTexts.xlsx or a similar TIA Portal text export workbook." }
+                },
+                required = new[] { "filePath" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_analyze_webserver_bindings",
+            title = "Analyze TIA Web Server Bindings",
+            description = "Analyze TIA Portal web-server HTML/TXT files and extract PLC tag bindings of the form :=\"DB\".Tag:. Useful for HMI/web template generation without Openness.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    path = new { type = "string", description = "Path to an HTML/TXT file or a folder containing TIA web-server files." }
+                },
+                required = new[] { "path" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_analyze_db_source",
+            title = "Analyze TIA DB Source",
+            description = "Analyze a generated/exported TIA Portal DATA_BLOCK source file (.db/.scl): block name, optimized access marker, sections, and variables.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    filePath = new { type = "string", description = "Path to a TIA DATA_BLOCK source file." }
+                },
+                required = new[] { "filePath" },
+                additionalProperties = false
+            }
+        },
+        new
+        {
+            name = "tia_analyze_pdf_printout_text",
+            title = "Analyze TIA PDF Printout Text",
+            description = "Analyze text extracted from a TIA Portal PDF printout. Extracts HMI object type counts, event names, variable references, and screen names. Pass a .txt file created from the PDF text, not the binary PDF.",
+            inputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    filePath = new { type = "string", description = "Path to a text file containing extracted TIA Portal PDF printout text." }
+                },
+                required = new[] { "filePath" },
                 additionalProperties = false
             }
         },
