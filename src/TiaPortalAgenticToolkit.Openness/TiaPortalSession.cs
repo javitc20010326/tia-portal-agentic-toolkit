@@ -5,6 +5,9 @@ public sealed class TiaPortalSession
     private readonly TiaEnvironmentProbe _probe = new();
     private readonly OfflineExportAnalyzer _offline = new();
     private readonly ImportPackGenerator _importPacks = new();
+    private readonly TemplatePackGenerator _templatePacks = new();
+    private readonly UiAgentPlanner _uiAgent = new();
+    private readonly TiaArtifactParsers _artifactParsers = new();
 
     public TiaEnvironmentStatus GetEnvironmentStatus() => _probe.GetStatus();
 
@@ -48,6 +51,34 @@ public sealed class TiaPortalSession
         string? userProfile,
         string? tiaVersion) =>
         _importPacks.GenerateHmiPlan(outputFolder, projectName, axisName, userProfile, tiaVersion);
+
+    public TemplatePackResult GenerateLogicTemplatePack(
+        string outputFolder,
+        string? projectName,
+        string? axisName,
+        string? tiaVersion,
+        bool includeHmi) =>
+        _templatePacks.GenerateLogicTemplatePack(outputFolder, projectName, axisName, tiaVersion, includeHmi);
+
+    public UiAgentPlanResult GenerateUiAgentPlan(
+        string outputFolder,
+        string? projectPath,
+        string? importPackFolder,
+        string? tiaVersion,
+        string? automationProfile) =>
+        _uiAgent.GeneratePlan(outputFolder, projectPath, importPackFolder, tiaVersion, automationProfile);
+
+    public ProjectTextsSummary AnalyzeProjectTextsXlsx(string filePath) =>
+        _artifactParsers.AnalyzeProjectTextsXlsx(filePath);
+
+    public WebServerBindingSummary AnalyzeWebServerBindings(string path) =>
+        _artifactParsers.AnalyzeWebServerBindings(path);
+
+    public DbSourceSummary AnalyzeDbSource(string filePath) =>
+        _artifactParsers.AnalyzeDbSource(filePath);
+
+    public PdfPrintoutTextSummary AnalyzePdfPrintoutText(string filePath) =>
+        _artifactParsers.AnalyzePdfPrintoutText(filePath);
 
     public object AttachToRunningPortal(int? processId)
     {
