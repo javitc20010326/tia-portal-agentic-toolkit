@@ -1,0 +1,55 @@
+{
+  "schema": "tia-portal-agentic-toolkit.template-pack.v1",
+  "generatedAtUtc": "2026-05-07T08:55:34.5529737+00:00",
+  "projectName": "Proyecto3_Carla",
+  "axisName": "AxisCarla",
+  "tiaVersion": "V16",
+  "includes": [
+    "LAD",
+    "FBD",
+    "HMI"
+  ],
+  "files": [
+    {
+      "path": "logic-ir.json",
+      "kind": "logic-ir",
+      "purpose": "Neutral PLC logic representation for SCL/LAD/FBD generation."
+    },
+    {
+      "path": "LAD_AxisInterlock.template.json",
+      "kind": "lad-template-ir",
+      "purpose": "Ladder-style network template expressed as neutral contacts/coils."
+    },
+    {
+      "path": "FBD_AxisMode.template.json",
+      "kind": "fbd-template-ir",
+      "purpose": "Function-block-diagram-style network template expressed as neutral blocks/signals."
+    },
+    {
+      "path": "LAD_Networks.md",
+      "kind": "lad-readable-spec",
+      "purpose": "Readable LAD network plan for humans and future template rendering."
+    },
+    {
+      "path": "FBD_Networks.md",
+      "kind": "fbd-readable-spec",
+      "purpose": "Readable FBD network plan for humans and future template rendering."
+    },
+    {
+      "path": "HMI_AxisOverview.template.json",
+      "kind": "hmi-template-ir",
+      "purpose": "Neutral HMI screen template with objects, bindings, alarms, and layout."
+    },
+    {
+      "path": "SEED_TEMPLATE_REQUEST.md",
+      "kind": "seed-template-request",
+      "purpose": "Exact exports needed to convert neutral templates into real TIA XML for this TIA version."
+    }
+  ],
+  "seedTemplatesRequired": [
+    "Exported LAD FB XML from the same TIA Portal major version.",
+    "Exported FBD FB XML from the same TIA Portal major version.",
+    "Exported PLC tag table CSV/XML from the same TIA Portal major version.",
+    "Exported HMI screen/template from the same TIA Portal/WinCC generation, if export is available."
+  ]
+}
