@@ -2,7 +2,9 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Repository,
 
-    [string]$Branch = "main"
+    [string]$Branch = "main",
+
+    [switch]$RunCi
 )
 
 $ErrorActionPreference = "Stop"
@@ -40,11 +42,28 @@ function Get-RemoteFileSha([string]$Path) {
     }
 }
 
+function Test-IsUploadableSourceFile([System.IO.FileInfo]$File) {
+    $relative = $File.FullName.Substring($root.Length + 1).Replace('\', '/')
+    $blockedExtensions = @(
+        ".zip", ".rar", ".pdf", ".xlsx", ".download",
+        ".ap16", ".ap17", ".ap18", ".ap19", ".ap20", ".ap21",
+        ".zap16", ".zap17", ".zap18", ".zap19", ".zap20", ".zap21",
+        ".al"
+    )
+
+    if ($blockedExtensions -contains $File.Extension.ToLowerInvariant()) {
+        return $false
+    }
+
+    if ($relative -match '(^|/)(bin|obj|\.git|exports|backups|user-exports|analysis|tia-user-exports-analysis)(/|$)') {
+        return $false
+    }
+
+    return $true
+}
+
 $files = Get-ChildItem -LiteralPath $root -Recurse -File |
-    Where-Object {
-        $_.FullName -notmatch '\\(bin|obj)\\' -and
-        $_.FullName -notmatch '\\.git\\'
-    } |
+    Where-Object { Test-IsUploadableSourceFile $_ } |
     Sort-Object FullName
 
 foreach ($file in $files) {
@@ -56,6 +75,9 @@ foreach ($file in $files) {
         message = if ($sha) { "Update $relativePath" } else { "Add $relativePath" }
         content = ConvertTo-Base64Utf8 $content
         branch = $Branch
+    }
+    if (-not $RunCi) {
+        $body.message += " [skip ci]"
     }
     if ($sha) {
         $body.sha = $sha
