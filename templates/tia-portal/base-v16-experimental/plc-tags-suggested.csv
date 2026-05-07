@@ -1,0 +1,16 @@
+Name,DataType,LogicalAddress,Comment
+HMI_Axis_Enable,Bool,,HMI command: enable axis.
+HMI_Axis_Reset,Bool,,HMI command: reset axis fault.
+HMI_Axis_Stop,Bool,,HMI command: controlled stop.
+HMI_Axis_JogPositive,Bool,,HMI command: jog positive.
+HMI_Axis_JogNegative,Bool,,HMI command: jog negative.
+HMI_Axis_TargetPosition,Real,,HMI setpoint: target position.
+HMI_Axis_ActualPosition,Real,,HMI display: actual position.
+I_Axis_DriveReady,Bool,,Drive ready feedback. Assign real input address manually.
+I_Axis_DriveFault,Bool,,Drive fault feedback. Assign real input address manually.
+I_Axis_PositiveLimit,Bool,,Positive limit feedback. Assign real input address manually.
+I_Axis_NegativeLimit,Bool,,Negative limit feedback. Assign real input address manually.
+Q_Axis_EnableDrive,Bool,,Drive enable output. Assign real output address manually.
+Q_Axis_MovePositive,Bool,,Positive movement command. Assign real output address manually.
+Q_Axis_MoveNegative,Bool,,Negative movement command. Assign real output address manually.
+Q_Axis_StopDrive,Bool,,Drive stop output. Assign real output address manually.
