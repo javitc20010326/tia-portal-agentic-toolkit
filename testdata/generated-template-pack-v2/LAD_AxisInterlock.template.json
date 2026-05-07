@@ -1,0 +1,146 @@
+{
+  "schema": "tia-portal-agentic-toolkit.lad-template-ir.v1",
+  "blockName": "FB_AxisCarla_LAD_Interlocks",
+  "networks": [
+    {
+      "id": "N001",
+      "title": "Ready permissive",
+      "elements": [
+        {
+          "type": "contact",
+          "signal": "DriveReady",
+          "normallyClosed": false
+        },
+        {
+          "type": "contact",
+          "signal": "DriveFault",
+          "normallyClosed": true
+        },
+        {
+          "type": "contact",
+          "signal": "Status.Error",
+          "normallyClosed": true
+        }
+      ],
+      "coil": {
+        "type": "coil",
+        "signal": "Status.Ready"
+      }
+    },
+    {
+      "id": "N002",
+      "title": "Drive enable",
+      "elements": [
+        {
+          "type": "contact",
+          "signal": "Command.Enable",
+          "normallyClosed": false
+        },
+        {
+          "type": "contact",
+          "signal": "Status.Ready",
+          "normallyClosed": false
+        },
+        {
+          "type": "contact",
+          "signal": "Command.Stop",
+          "normallyClosed": true
+        }
+      ],
+      "coil": {
+        "type": "coil",
+        "signal": "EnableDrive"
+      }
+    },
+    {
+      "id": "N003",
+      "title": "Positive jog",
+      "elements": [
+        {
+          "type": "contact",
+          "signal": "EnableDrive",
+          "normallyClosed": false
+        },
+        {
+          "type": "contact",
+          "signal": "Command.JogPositive",
+          "normallyClosed": false
+        },
+        {
+          "type": "contact",
+          "signal": "PositiveLimit",
+          "normallyClosed": true
+        },
+        {
+          "type": "contact",
+          "signal": "Command.Stop",
+          "normallyClosed": true
+        }
+      ],
+      "coil": {
+        "type": "coil",
+        "signal": "MovePositive"
+      }
+    },
+    {
+      "id": "N004",
+      "title": "Negative jog",
+      "elements": [
+        {
+          "type": "contact",
+          "signal": "EnableDrive",
+          "normallyClosed": false
+        },
+        {
+          "type": "contact",
+          "signal": "Command.JogNegative",
+          "normallyClosed": false
+        },
+        {
+          "type": "contact",
+          "signal": "NegativeLimit",
+          "normallyClosed": true
+        },
+        {
+          "type": "contact",
+          "signal": "Command.Stop",
+          "normallyClosed": true
+        }
+      ],
+      "coil": {
+        "type": "coil",
+        "signal": "MoveNegative"
+      }
+    },
+    {
+      "id": "N005",
+      "title": "Stop output",
+      "elements": [
+        {
+          "type": "parallelBranch",
+          "paths": [
+            {
+              "type": "contact",
+              "signal": "Command.Stop",
+              "normallyClosed": false
+            },
+            {
+              "type": "contact",
+              "signal": "DriveFault",
+              "normallyClosed": false
+            },
+            {
+              "type": "contact",
+              "signal": "Status.Error",
+              "normallyClosed": false
+            }
+          ]
+        }
+      ],
+      "coil": {
+        "type": "coil",
+        "signal": "StopDrive"
+      }
+    }
+  ]
+}
