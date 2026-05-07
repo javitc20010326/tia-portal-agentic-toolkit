@@ -1,0 +1,45 @@
+{
+  "schema": "tia-portal-agentic-toolkit.experimental-import-map.v1",
+  "tiaVersion": "V16",
+  "projectName": "Proyecto3_Carla",
+  "axisName": "AxisCarla",
+  "preferredFlow": "SCL first, robot LAD/FBD/HMI recipes second, real TIA XML renderer when available.",
+  "files": [
+    {
+      "path": "EXPERIMENTAL_LAD_AxisInterlock.robot.xml",
+      "role": "ladRobotRecipe",
+      "directTiaImport": false,
+      "uiAgentCanRead": true
+    },
+    {
+      "path": "EXPERIMENTAL_FBD_AxisMode.robot.xml",
+      "role": "fbdRobotRecipe",
+      "directTiaImport": false,
+      "uiAgentCanRead": true
+    },
+    {
+      "path": "LAD_AxisInterlock.template.json",
+      "role": "ladNeutralIr",
+      "directTiaImport": false,
+      "uiAgentCanRead": true
+    },
+    {
+      "path": "FBD_AxisMode.template.json",
+      "role": "fbdNeutralIr",
+      "directTiaImport": false,
+      "uiAgentCanRead": true
+    },
+    {
+      "path": "HMI_AxisOverview.template.json",
+      "role": "hmiNeutralIr",
+      "directTiaImport": false,
+      "uiAgentCanRead": true
+    }
+  ],
+  "robotInstructions": [
+    "Prefer generated SCL artifacts when direct import is needed.",
+    "Use .robot.xml/.robot.json files as UI construction recipes.",
+    "If TIA import rejects an experimental XML file, switch to guided UI construction or request real exports from the target TIA version.",
+    "Never download generated logic to hardware automatically."
+  ]
+}
