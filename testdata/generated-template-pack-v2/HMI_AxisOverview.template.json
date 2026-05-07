@@ -1,0 +1,123 @@
+{
+  "schema": "tia-portal-agentic-toolkit.hmi-template-ir.v1",
+  "screenName": "AxisCarla_Overview",
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "objects": [
+    {
+      "id": "title",
+      "type": "Text",
+      "x": 24,
+      "y": 20,
+      "width": 500,
+      "height": 40,
+      "bindingOrText": "AxisCarla"
+    },
+    {
+      "id": "stateText",
+      "type": "TextField",
+      "x": 24,
+      "y": 80,
+      "width": 360,
+      "height": 36,
+      "bindingOrText": "DB_AxisCarla_Data.Status.StateText"
+    },
+    {
+      "id": "fault",
+      "type": "Indicator",
+      "x": 410,
+      "y": 80,
+      "width": 120,
+      "height": 36,
+      "bindingOrText": "DB_AxisCarla_Data.Status.Error"
+    },
+    {
+      "id": "enable",
+      "type": "Button",
+      "x": 24,
+      "y": 150,
+      "width": 140,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Command.Enable"
+    },
+    {
+      "id": "stop",
+      "type": "Button",
+      "x": 180,
+      "y": 150,
+      "width": 140,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Command.Stop"
+    },
+    {
+      "id": "reset",
+      "type": "Button",
+      "x": 336,
+      "y": 150,
+      "width": 140,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Command.Reset"
+    },
+    {
+      "id": "jogPositive",
+      "type": "Button",
+      "x": 24,
+      "y": 220,
+      "width": 180,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Command.JogPositive"
+    },
+    {
+      "id": "jogNegative",
+      "type": "Button",
+      "x": 220,
+      "y": 220,
+      "width": 180,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Command.JogNegative"
+    },
+    {
+      "id": "targetPosition",
+      "type": "NumericInput",
+      "x": 24,
+      "y": 300,
+      "width": 220,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Command.TargetPosition"
+    },
+    {
+      "id": "actualPosition",
+      "type": "NumericOutput",
+      "x": 270,
+      "y": 300,
+      "width": 220,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Status.ActualPosition"
+    },
+    {
+      "id": "errorCode",
+      "type": "NumericOutput",
+      "x": 24,
+      "y": 370,
+      "width": 220,
+      "height": 44,
+      "bindingOrText": "DB_AxisCarla_Data.Status.ErrorCode"
+    }
+  ],
+  "alarms": [
+    {
+      "name": "AxisCarla_DriveFault",
+      "trigger": "DB_AxisCarla_Data.Status.ErrorCode = 16#0100"
+    },
+    {
+      "name": "AxisCarla_PositiveLimit",
+      "trigger": "DB_AxisCarla_Data.Status.ErrorCode = 16#0201"
+    },
+    {
+      "name": "AxisCarla_NegativeLimit",
+      "trigger": "DB_AxisCarla_Data.Status.ErrorCode = 16#0202"
+    }
+  ]
+}
