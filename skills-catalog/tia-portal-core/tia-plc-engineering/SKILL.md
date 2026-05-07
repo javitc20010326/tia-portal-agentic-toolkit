@@ -18,6 +18,8 @@ Use semi-agentic tools when available:
 - `tia_prepare_manual_import_checklist` before the user imports anything manually.
 - `tia_generate_axis_control_pack` to create SCL UDT/DB/FB artifacts, tag CSV, HMI plan, report, and checklist for manual import.
 - `tia_generate_plc_tag_table_csv` to create suggested tag tables with hardware addresses intentionally left for human assignment.
+- `tia_generate_logic_template_pack` for neutral LAD/FBD/HMI template artifacts and seed-template requests.
+- `tia_generate_ui_agent_plan` when TIA Portal is installed but Openness is unavailable and the user wants desktop-level automation.
 
 Preferred workflow:
 
@@ -28,3 +30,5 @@ Preferred workflow:
 5. Compile after changes and report diagnostics.
 
 For SCL generation, prefer deterministic, documented code with clear interfaces, explicit types, and defensive range handling. Do not invent hardware addresses or safety behavior.
+
+For LAD/FBD/HMI without Openness, do not pretend neutral templates are real TIA XML until seed exports from the same TIA Portal version are available. Use the template system to request seed LAD, FBD, tag-table, and HMI exports.
