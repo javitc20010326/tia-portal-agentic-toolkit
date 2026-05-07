@@ -1,0 +1,51 @@
+{
+  "schema": "tia-portal-agentic-toolkit.ui-agent-plan.v1",
+  "tiaVersion": "V16",
+  "automationProfile": "guided",
+  "projectPath": null,
+  "importPackFolder": "C:\\Users\\javit\\Documents\\Codex\\2026-05-06\\instala-esto-revisa-todo-el-enlace\\tia-portal-agentic-toolkit\\testdata\\generated-axis-pack",
+  "generatedAtUtc": "2026-05-07T08:55:50.5924686+00:00",
+  "phases": [
+    {
+      "id": "detect",
+      "action": "status",
+      "required": true
+    },
+    {
+      "id": "openProject",
+      "action": "open-project",
+      "required": false,
+      "projectPath": null
+    },
+    {
+      "id": "focus",
+      "action": "focus",
+      "required": true,
+      "windowTitleRegex": "TIA|Totally Integrated Automation|Portal"
+    },
+    {
+      "id": "prepareImport",
+      "action": "prepare-import",
+      "required": true,
+      "importPackFolder": "C:\\Users\\javit\\Documents\\Codex\\2026-05-06\\instala-esto-revisa-todo-el-enlace\\tia-portal-agentic-toolkit\\testdata\\generated-axis-pack"
+    },
+    {
+      "id": "operatorImportAssist",
+      "action": "guided-sendkeys",
+      "required": false,
+      "profile": "guided"
+    },
+    {
+      "id": "collectDiagnostics",
+      "action": "capture-state",
+      "required": true
+    }
+  ],
+  "safety": {
+    "usesOpenness": false,
+    "editsProjectThroughApi": false,
+    "editsProjectThroughUi": false,
+    "downloadsToHardware": false,
+    "requiresCopiedProject": true
+  }
+}
