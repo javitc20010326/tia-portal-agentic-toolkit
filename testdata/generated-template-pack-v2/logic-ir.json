@@ -1,0 +1,121 @@
+{
+  "schema": "tia-portal-agentic-toolkit.logic-ir.v1",
+  "projectName": "Proyecto3_Carla",
+  "axisName": "AxisCarla",
+  "tiaVersion": "V16",
+  "targetLanguages": [
+    "SCL",
+    "LAD",
+    "FBD",
+    "HMI"
+  ],
+  "signals": [
+    {
+      "name": "Command.Enable",
+      "dataType": "Bool",
+      "comment": "Operator enable"
+    },
+    {
+      "name": "Command.Reset",
+      "dataType": "Bool",
+      "comment": "Fault reset"
+    },
+    {
+      "name": "Command.Stop",
+      "dataType": "Bool",
+      "comment": "Controlled stop"
+    },
+    {
+      "name": "Command.JogPositive",
+      "dataType": "Bool",
+      "comment": "Positive jog"
+    },
+    {
+      "name": "Command.JogNegative",
+      "dataType": "Bool",
+      "comment": "Negative jog"
+    },
+    {
+      "name": "DriveReady",
+      "dataType": "Bool",
+      "comment": "Drive ready feedback"
+    },
+    {
+      "name": "DriveFault",
+      "dataType": "Bool",
+      "comment": "Drive fault feedback"
+    },
+    {
+      "name": "PositiveLimit",
+      "dataType": "Bool",
+      "comment": "Positive limit switch"
+    },
+    {
+      "name": "NegativeLimit",
+      "dataType": "Bool",
+      "comment": "Negative limit switch"
+    },
+    {
+      "name": "Status.Ready",
+      "dataType": "Bool",
+      "comment": "Axis ready"
+    },
+    {
+      "name": "Status.Error",
+      "dataType": "Bool",
+      "comment": "Axis fault"
+    },
+    {
+      "name": "EnableDrive",
+      "dataType": "Bool",
+      "comment": "Drive enable output"
+    },
+    {
+      "name": "MovePositive",
+      "dataType": "Bool",
+      "comment": "Positive movement output"
+    },
+    {
+      "name": "MoveNegative",
+      "dataType": "Bool",
+      "comment": "Negative movement output"
+    },
+    {
+      "name": "StopDrive",
+      "dataType": "Bool",
+      "comment": "Stop output"
+    }
+  ],
+  "networks": [
+    {
+      "id": "N001",
+      "title": "Ready permissive",
+      "languageHint": "LAD",
+      "expression": "Status.Ready := DriveReady AND NOT DriveFault AND NOT Status.Error"
+    },
+    {
+      "id": "N002",
+      "title": "Drive enable",
+      "languageHint": "LAD",
+      "expression": "EnableDrive := Command.Enable AND Status.Ready AND NOT Command.Stop"
+    },
+    {
+      "id": "N003",
+      "title": "Positive jog interlock",
+      "languageHint": "LAD",
+      "expression": "MovePositive := EnableDrive AND Command.JogPositive AND NOT PositiveLimit AND NOT Command.Stop"
+    },
+    {
+      "id": "N004",
+      "title": "Negative jog interlock",
+      "languageHint": "LAD",
+      "expression": "MoveNegative := EnableDrive AND Command.JogNegative AND NOT NegativeLimit AND NOT Command.Stop"
+    },
+    {
+      "id": "N005",
+      "title": "Stop priority",
+      "languageHint": "FBD",
+      "expression": "StopDrive := Command.Stop OR DriveFault OR Status.Error"
+    }
+  ]
+}
