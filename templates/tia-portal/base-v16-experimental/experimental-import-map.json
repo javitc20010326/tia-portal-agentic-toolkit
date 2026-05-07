@@ -1,0 +1,18 @@
+{
+  "schema": "tia-portal-agentic-toolkit.experimental-import-map.v1",
+  "tiaVersion": "V16",
+  "directTiaImportGuaranteed": false,
+  "uiAgentReadable": true,
+  "files": [
+    { "path": "lad-axis-interlock.robot.xml", "role": "ladRobotRecipe", "directTiaImport": false },
+    { "path": "fbd-axis-mode.robot.xml", "role": "fbdRobotRecipe", "directTiaImport": false },
+    { "path": "hmi-axis-overview.robot.json", "role": "hmiRobotRecipe", "directTiaImport": false },
+    { "path": "plc-tags-suggested.csv", "role": "tagTableDraft", "directTiaImport": "version-dependent" }
+  ],
+  "robotInstructions": [
+    "Use robot XML/JSON as construction recipes.",
+    "Prefer generated SCL files for direct source import.",
+    "If TIA rejects an artifact, capture diagnostics and switch to guided UI construction.",
+    "Never download to hardware automatically."
+  ]
+}
