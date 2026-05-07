@@ -20,6 +20,9 @@ try {
     $script = Join-Path $PSScriptRoot "upload-github.ps1"
     & $script -Repository $Repository
     Write-Host ""
+    Write-Host "Upload commits include [skip ci] by default to avoid GitHub Actions failures while files are uploaded one by one." -ForegroundColor Yellow
+    Write-Host "After upload, run GitHub Actions manually from the repository page if you want to verify CI." -ForegroundColor Yellow
+    Write-Host ""
     Write-Host "Upload finished. Press Enter to close." -ForegroundColor Green
     Read-Host
 }
