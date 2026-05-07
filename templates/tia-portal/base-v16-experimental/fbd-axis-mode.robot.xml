@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TiaPortalAgenticToolkitRobotTemplate schema="tia-portal-agentic-toolkit.robot-fbd.v1"
+                                      tiaVersion="V16"
+                                      blockName="FB_Axis_FBD_Mode"
+                                      language="FBD"
+                                      importConfidence="experimental">
+  <Notice>This is toolkit robot XML, not certified Siemens XML.</Notice>
+  <Networks>
+    <Network id="N001" title="Ready permissive">
+      <Block type="AND" name="AND_Ready">
+        <Input signal="DriveReady" />
+        <Input signal="NOT DriveFault" />
+        <Input signal="NOT Status.Error" />
+        <Output signal="Status.Ready" />
+      </Block>
+    </Network>
+    <Network id="N002" title="Drive enable">
+      <Block type="AND" name="AND_Enable">
+        <Input signal="Command.Enable" />
+        <Input signal="Status.Ready" />
+        <Input signal="NOT Command.Stop" />
+        <Output signal="EnableDrive" />
+      </Block>
+    </Network>
+    <Network id="N003" title="Stop priority">
+      <Block type="OR" name="OR_Stop">
+        <Input signal="Command.Stop" />
+        <Input signal="DriveFault" />
+        <Input signal="Status.Error" />
+        <Output signal="StopDrive" />
+      </Block>
+    </Network>
+  </Networks>
+</TiaPortalAgenticToolkitRobotTemplate>
