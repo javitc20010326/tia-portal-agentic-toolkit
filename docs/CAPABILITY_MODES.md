@@ -56,6 +56,33 @@ Core tools:
 - `tia_generate_plc_tag_table_csv`
 - `tia_generate_hmi_plan`
 
+### UI Agent
+
+Requirements:
+
+- Windows.
+- TIA Portal installed.
+- Codex/toolkit running on the same desktop session as TIA Portal.
+- Visible user session, not a locked or headless machine.
+
+Capabilities:
+
+- detect/open/focus TIA Portal from the desktop,
+- prepare generated import packs,
+- execute a guided UI-agent run plan,
+- capture Portal process/window state,
+- provide hooks for keystroke-based import/compile workflows,
+- collect diagnostics when the UI exposes copyable text or when OCR is added later.
+
+Core tools/scripts:
+
+- `tia_generate_ui_agent_plan`
+- `scripts/ui-agent/tia-ui-agent.ps1`
+
+Limit:
+
+UI Agent Mode is not an official API. It is version/language/layout dependent and must be proven on a copied project before use.
+
 ### Advisory
 
 Requirements:
