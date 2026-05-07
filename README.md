@@ -1,6 +1,6 @@
 # TIA Portal Agentic Toolkit
 
-Experimental Codex toolkit for Siemens TIA Portal automation through TIA Portal Openness.
+Experimental Codex toolkit for Siemens TIA Portal automation through TIA Portal Openness, generated import packs, and desktop UI automation.
 
 The goal is to give Codex an agentic interface similar in spirit to MATLAB/Simulink agentic toolkits:
 
@@ -24,8 +24,12 @@ Implemented:
 - Semi-agentic export analysis for XML/SCL/AWL/CSV/Excel folders.
 - Semi-agentic import-pack generation for PLC/HMI engineering artifacts.
 - Axis-control starter pack generation: SCL UDTs, DB, FB, OB1 call example, suggested tag CSV, HMI plan, report, manifest, and manual import checklist.
+- UI Agent Mode plan generation for machines with TIA Portal but without Openness permissions.
+- Experimental PowerShell UI runner for TIA Portal desktop detection, project opening, window focus, import-pack preparation, and state capture.
+- Neutral LAD/FBD/HMI template packs plus built-in experimental robot templates for fallback no-Openness workflows.
+- Private export parsers for TIA Project Texts XLSX, TIA web-server HTML bindings, DB source files, and extracted PDF printout text.
 - Codex plugin metadata and skills catalog.
-- Multi-mode strategy: full agentic with Openness, semi-agentic with exports, advisory without TIA Portal.
+- Multi-mode strategy: full agentic with Openness, UI-agent without Openness, semi-agentic with exports/import packs, advisory without TIA Portal.
 
 Planned:
 
@@ -45,6 +49,8 @@ Planned:
 - OpenAI Codex with MCP support.
 
 Without Openness permissions, the toolkit should still work in semi-agentic mode over exported XML/SCL/CSV/Excel artifacts.
+
+If TIA Portal is installed but Openness is unavailable, the toolkit can use UI Agent Mode. This is desktop automation, not a Siemens engineering API. It can open/focus TIA Portal, prepare import packs, and provide a runner for guided/aggressive UI automation, but it is more brittle than Openness.
 
 Siemens documents that TIA Portal Openness is an API for automating engineering workflows, and that access requires the local `Siemens TIA Openness` Windows group plus the TIA Portal Openness firewall prompt.
 
@@ -85,6 +91,18 @@ Generate a TIA Portal V16 axis-control import pack for Axis1 in this output fold
 
 This produces SCL, CSV, HMI planning, and checklist files. It does not modify `.ap16`/`.zap16` project internals and does not download to hardware.
 
+To prepare no-Openness desktop automation, ask:
+
+```text
+Generate a TIA UI-agent plan for my V16 project and this import pack.
+```
+
+To generate LAD/FBD/HMI template specifications, ask:
+
+```text
+Generate a LAD/FBD/HMI template pack for Axis1 in TIA Portal V16.
+```
+
 ## Safety Model
 
 The MCP server should default to read-only exploration. Any tool that can modify a TIA Portal project, compile, download, start/stop simulation, or touch hardware must require explicit user approval at the Codex layer and should create backups/export artifacts first.
@@ -114,7 +132,50 @@ templates/                             Codex config examples
 - `tia_generate_axis_control_pack`
 - `tia_generate_plc_tag_table_csv`
 - `tia_generate_hmi_plan`
+- `tia_generate_logic_template_pack`
+- `tia_generate_ui_agent_plan`
+- `tia_analyze_project_texts_xlsx`
+- `tia_analyze_webserver_bindings`
+- `tia_analyze_db_source`
+- `tia_analyze_pdf_printout_text`
 - `tia_attach_running_portal` (stub in v0.1)
+
+## No-Openness Automation Strategy
+
+There are two no-Openness paths:
+
+- `Import Pack`: generate SCL/CSV/HMI documentation that can be imported or copied into TIA.
+- `UI Agent Mode`: run a desktop automation plan against the visible TIA Portal application.
+
+LAD, FBD, and HMI generation uses a template system. The repo can generate neutral logic/template files now. For reliable real TIA XML, provide seed exports from the same TIA Portal version: one tiny LAD block, one tiny FBD block, one tag table, and one HMI screen if available.
+
+The repo also includes built-in experimental templates in:
+
+```text
+templates/tia-portal/base-v16-experimental/
+```
+
+These are fallback recipes for the toolkit and UI robot. They are not guaranteed Siemens import XML. Real exported TIA files are still the best way to improve reliability.
+
+## Best Files To Give Codex
+
+Preferred formats:
+
+- `.scl` generated sources,
+- `.xml` exported PLC blocks, LAD/FBD blocks, DBs, UDTs, and tag tables,
+- `.csv` exported PLC tag tables,
+- HMI screen/template exports if TIA/WinCC allows export,
+- copied compiler diagnostics as `.txt`.
+
+Useful but weaker:
+
+- `.zap16` archives and `.ap16` project files for context,
+- screenshots of LAD/FBD/HMI screens,
+- PDFs or written control requirements.
+
+Avoid expecting the toolkit to edit `.ap16` internals directly. The safe paths are Openness, TIA exports/imports, or UI Agent Mode on a visible copied project.
+
+Private exports should stay private. The repository `.gitignore` excludes common TIA/project/archive/report files so exercises, credentials, and personal data are not accidentally published.
 
 ## References
 
