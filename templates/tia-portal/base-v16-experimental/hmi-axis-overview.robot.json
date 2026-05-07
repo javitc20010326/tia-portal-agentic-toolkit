@@ -1,0 +1,18 @@
+{
+  "schema": "tia-portal-agentic-toolkit.robot-hmi.v1",
+  "tiaVersion": "V16",
+  "screenName": "Axis_Overview",
+  "importConfidence": "experimental",
+  "note": "Toolkit robot HMI recipe. It is not a certified WinCC/TIA screen export.",
+  "actions": [
+    { "action": "createScreen", "name": "Axis_Overview", "width": 1280, "height": 720 },
+    { "action": "addText", "id": "title", "text": "Axis", "x": 24, "y": 20, "width": 500, "height": 40 },
+    { "action": "addTextField", "id": "stateText", "tag": "DB_Axis_Data.Status.StateText", "x": 24, "y": 80, "width": 360, "height": 36 },
+    { "action": "addIndicator", "id": "fault", "tag": "DB_Axis_Data.Status.Error", "x": 410, "y": 80, "width": 120, "height": 36 },
+    { "action": "addButton", "id": "enable", "label": "Enable", "tag": "DB_Axis_Data.Command.Enable", "mode": "toggle", "x": 24, "y": 150, "width": 140, "height": 44 },
+    { "action": "addButton", "id": "stop", "label": "Stop", "tag": "DB_Axis_Data.Command.Stop", "mode": "momentary", "x": 180, "y": 150, "width": 140, "height": 44 },
+    { "action": "addButton", "id": "reset", "label": "Reset", "tag": "DB_Axis_Data.Command.Reset", "mode": "momentary", "x": 336, "y": 150, "width": 140, "height": 44 },
+    { "action": "addNumericInput", "id": "targetPosition", "tag": "DB_Axis_Data.Command.TargetPosition", "x": 24, "y": 300, "width": 220, "height": 44 },
+    { "action": "addNumericOutput", "id": "actualPosition", "tag": "DB_Axis_Data.Status.ActualPosition", "x": 270, "y": 300, "width": 220, "height": 44 }
+  ]
+}
