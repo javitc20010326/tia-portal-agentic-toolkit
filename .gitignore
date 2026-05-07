@@ -6,8 +6,15 @@ obj/
 *.suo
 *.log
 *.zip
+*.rar
+*.pdf
+*.xlsx
+*.download
 exports/
 backups/
+user-exports/
+analysis/
+tia-user-exports-analysis/
 *.ap*
 *.zap*
 *.al*
