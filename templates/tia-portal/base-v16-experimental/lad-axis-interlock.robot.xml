@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TiaPortalAgenticToolkitRobotTemplate schema="tia-portal-agentic-toolkit.robot-lad.v1"
+                                      tiaVersion="V16"
+                                      blockName="FB_Axis_LAD_Interlocks"
+                                      language="LAD"
+                                      importConfidence="experimental">
+  <Notice>This is toolkit robot XML, not certified Siemens XML.</Notice>
+  <Networks>
+    <Network id="N001" title="Ready permissive">
+      <Series>
+        <Contact signal="DriveReady" normallyClosed="false" />
+        <Contact signal="DriveFault" normallyClosed="true" />
+        <Contact signal="Status.Error" normallyClosed="true" />
+      </Series>
+      <Coil signal="Status.Ready" />
+    </Network>
+    <Network id="N002" title="Drive enable">
+      <Series>
+        <Contact signal="Command.Enable" normallyClosed="false" />
+        <Contact signal="Status.Ready" normallyClosed="false" />
+        <Contact signal="Command.Stop" normallyClosed="true" />
+      </Series>
+      <Coil signal="EnableDrive" />
+    </Network>
+    <Network id="N003" title="Positive jog">
+      <Series>
+        <Contact signal="EnableDrive" normallyClosed="false" />
+        <Contact signal="Command.JogPositive" normallyClosed="false" />
+        <Contact signal="PositiveLimit" normallyClosed="true" />
+        <Contact signal="Command.Stop" normallyClosed="true" />
+      </Series>
+      <Coil signal="MovePositive" />
+    </Network>
+    <Network id="N004" title="Negative jog">
+      <Series>
+        <Contact signal="EnableDrive" normallyClosed="false" />
+        <Contact signal="Command.JogNegative" normallyClosed="false" />
+        <Contact signal="NegativeLimit" normallyClosed="true" />
+        <Contact signal="Command.Stop" normallyClosed="true" />
+      </Series>
+      <Coil signal="MoveNegative" />
+    </Network>
+    <Network id="N005" title="Stop output">
+      <Parallel>
+        <Contact signal="Command.Stop" normallyClosed="false" />
+        <Contact signal="DriveFault" normallyClosed="false" />
+        <Contact signal="Status.Error" normallyClosed="false" />
+      </Parallel>
+      <Coil signal="StopDrive" />
+    </Network>
+  </Networks>
+</TiaPortalAgenticToolkitRobotTemplate>
