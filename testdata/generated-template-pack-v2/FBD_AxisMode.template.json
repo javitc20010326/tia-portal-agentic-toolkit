@@ -1,0 +1,49 @@
+{
+  "schema": "tia-portal-agentic-toolkit.fbd-template-ir.v1",
+  "blockName": "FB_AxisCarla_FBD_Mode",
+  "networks": [
+    {
+      "id": "N001",
+      "title": "Ready permissive",
+      "block": "AND",
+      "inputs": [
+        "DriveReady",
+        "NOT DriveFault",
+        "NOT Status.Error"
+      ],
+      "output": "Status.Ready"
+    },
+    {
+      "id": "N002",
+      "title": "Drive enable",
+      "block": "AND",
+      "inputs": [
+        "Command.Enable",
+        "Status.Ready",
+        "NOT Command.Stop"
+      ],
+      "output": "EnableDrive"
+    },
+    {
+      "id": "N003",
+      "title": "Stop priority",
+      "block": "OR",
+      "inputs": [
+        "Command.Stop",
+        "DriveFault",
+        "Status.Error"
+      ],
+      "output": "StopDrive"
+    },
+    {
+      "id": "N004",
+      "title": "Movement mutual exclusion",
+      "block": "AND",
+      "inputs": [
+        "NOT MovePositive",
+        "NOT MoveNegative"
+      ],
+      "output": "Status.NotMoving"
+    }
+  ]
+}
